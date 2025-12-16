@@ -21,8 +21,8 @@
                     <p class="blogger-desc">System Admin Note</p>
                     
                     <div class="sidebar-action-btns">
-                        <!-- [수정] 티스토리 자체 구독 버튼이 이동해 올 자리 -->
-                        <div id="subscribe-container" class="subscribe-wrapper"></div>
+                        <!-- 티스토리 자체 구독 버튼이 이동해 올 자리 -->
+                        <div id="subscribe-container" class="subscribe-wrapper" style="display: none;"></div>
                         <a href="/guestbook" class="btn-guestbook">💬 방명록</a>
                     </div>
                 </div>
@@ -32,6 +32,14 @@
                 
                 <div class="sidebar-tag-btn-area">
                     <a href="/tag" class="sidebar-tag-link">🏷️ 태그 (Tags)</a>
+                </div>
+
+                <!-- [AD] 사이드바 광고 영역 -->
+                <div class="sidebar-ad-area">
+                    <!-- 여기에 사이드바 광고 코드(160x600 또는 반응형)를 넣으세요 -->
+                    <div class="ad-placeholder">
+                        <span>Advertisement</span>
+                    </div>
                 </div>
             </div>
             
@@ -110,8 +118,24 @@
                                     </div>
                                 </header>
                                 
+                                <!-- [AD] 본문 상단 광고 영역 -->
+                                <div class="article-ad-top">
+                                    <!-- 여기에 본문 상단 광고 코드를 넣으세요 -->
+                                    <div class="ad-placeholder">
+                                        <span>Advertisement (Top)</span>
+                                    </div>
+                                </div>
+
                                 <div class="article-body">
                                     [##_article_rep_desc_##]
+                                </div>
+
+                                <!-- [AD] 본문 하단 광고 영역 -->
+                                <div class="article-ad-bottom">
+                                    <!-- 여기에 본문 하단 광고 코드를 넣으세요 -->
+                                    <div class="ad-placeholder">
+                                        <span>Advertisement (Bottom)</span>
+                                    </div>
                                 </div>
 
                                 <s_tag_label>
@@ -295,7 +319,7 @@
     </div>
 </s_t3>
 
-<!-- [수정됨] 스크립트: 구독 버튼 이동 및 상태 감지 + 더보기 기능 -->
+<!-- 스크립트: 구독 버튼 이동 및 상태 감지 + 더보기 기능 -->
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         // 1. 티스토리 자체 구독 버튼 관리
@@ -308,18 +332,18 @@
                 container.appendChild(nativeBtn);
                 nativeBtn.style.display = 'flex';
                 
-                // [기능] 구독 상태에 따른 텍스트 및 스타일 업데이트 함수
+                // 버튼이 있을 때만 컨테이너 표시
+                container.style.display = ''; 
+                
+                // 구독 상태에 따른 텍스트 및 스타일 업데이트
                 const updateSubscribeStatus = () => {
                     const status = nativeBtn.getAttribute('data-status');
                     if (status === 'following') {
-                        // 구독 중일 때
                         nativeBtn.innerHTML = '✔ 구독중';
-                        // 필요하다면 배경색 변경 (CSS 클래스 활용 권장, 여기서는 인라인 예시)
                         nativeBtn.style.backgroundColor = '#2b2d30'; 
                         nativeBtn.style.color = '#c4c7c5';
                         nativeBtn.style.border = '1px solid #444746';
                     } else {
-                        // 미구독 상태
                         nativeBtn.innerHTML = '⚡ 구독';
                         nativeBtn.style.backgroundColor = '#004a77'; 
                         nativeBtn.style.color = '#c2e7ff';
@@ -327,10 +351,8 @@
                     }
                 };
 
-                // 초기 실행
                 updateSubscribeStatus();
 
-                // [중요] 상태 변화 감지 (사용자가 클릭해서 상태가 바뀔 때)
                 const observer = new MutationObserver(updateSubscribeStatus);
                 observer.observe(nativeBtn, { 
                     attributes: true, 
@@ -341,10 +363,10 @@
             }
         }, 500);
 
-        setTimeout(() => clearInterval(moveSubscribeBtn), 10000); // 10초 타임아웃
+        setTimeout(() => clearInterval(moveSubscribeBtn), 10000); 
 
 
-        // 2. 더보기 기능 (기존 로직 유지)
+        // 2. 더보기 기능
         let nextPageUrl = null;
         const pagination = document.getElementById('pagination-area');
         if (pagination) {
