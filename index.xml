@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<skin>
+    <information>
+        <name>GeminiUI</name>
+        <version>2.0</version>
+        <description>Gemini-Like Theme UI</description>
+        <license>MIT License</license>
+    </information>
+    <author>
+        <name>BeeSY</name>
+        <website>https://beesyhive.tistory.com/</website>
+        <email>mywh1t3h4nd@outlook.com</email>
+    </author>
+    <default>
+        <recentEntries>5</recentEntries>
+        <recentComments>5</recentComments>
+        <recentTrackbacks>5</recentTrackbacks>
+        <itemsOnIndex>10</itemsOnIndex>
+    </default>
+</skin>

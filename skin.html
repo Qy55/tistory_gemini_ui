@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[##_page_title_##]</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body id="[##_body_id_##]">
+<s_t3>
+    <div id="app-container">
+        <!-- 1. 사이드바 -->
+        <aside id="sidebar">
+            <div class="sidebar-top">
+                <div class="sidebar-header">
+                    <h1><a href="[##_blog_link_##]">[##_title_##]</a></h1>
+                    <p class="blogger-desc">System Admin Note</p>
+                    
+                    <div class="sidebar-action-btns">
+                        <button class="btn-subscribe" onclick="window.open('[##_rss_url_##]')">⚡ 구독</button>
+                        <a href="/guestbook" class="btn-guestbook">💬 방명록</a>
+                    </div>
+                </div>
+                <nav class="sidebar-menu">
+                    [##_category_list_##]
+                </nav>
+                
+                <!-- [NEW] 태그 모음 화면 이동 버튼 -->
+                <div class="sidebar-tag-btn-area">
+                    <a href="/tag" class="sidebar-tag-link">🏷️ 태그 (Tags)</a>
+                </div>
+            </div>
+            
+            <div class="sidebar-footer">
+                <a href="[##_owner_url_##]" class="admin-link">⚙️ 관리자 설정</a>
+            </div>
+        </aside>
+
+        <!-- 2. 메인 콘텐츠 -->
+        <main id="main-content">
+            <div class="content-wrapper">
+
+                <!-- [A] 홈 화면 (커버) -->
+                <s_cover_group>
+                    <s_cover_rep>
+                        <div class="home-grid-section">
+                            <h2 class="section-title">[##_cover_title_##]</h2>
+                            <div class="post-grid">
+                                <s_cover_item>
+                                    <div class="grid-card">
+                                        <a href="[##_cover_item_url_##]" class="grid-link">
+                                            <div class="grid-thumb">
+                                                <s_cover_item_thumbnail>
+                                                    <img src="[##_cover_item_thumbnail_##]" onerror="this.src='./images/temp_thumb.png'" alt="">
+                                                </s_cover_item_thumbnail>
+                                            </div>
+                                            <div class="grid-info">
+                                                <h3 class="grid-title">[##_cover_item_title_##]</h3>
+                                                <p class="grid-date">[##_cover_item_simple_date_##]</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </s_cover_item>
+                            </div>
+                        </div>
+                    </s_cover_rep>
+                </s_cover_group>
+
+                <!-- [NEW] 태그 클라우드 화면 -->
+                <s_tag>
+                    <div class="tag-cloud-page">
+                        <h2 class="section-title">🏷️ 태그 모음</h2>
+                        <div class="tag-cloud-container">
+                            <s_tag_rep>
+                                <a href="[##_tag_link_##]" class="tag-cloud-item">[##_tag_name_##]</a>
+                            </s_tag_rep>
+                        </div>
+                    </div>
+                </s_tag>
+
+                <!-- [B] 카테고리 헤더 -->
+                <s_list>
+                    <div class="category-header">
+                        <h2 class="cat-title">📂 [##_list_str_##]</h2>
+                        <p class="cat-desc">총 [##_list_count_##]개의 글</p>
+                    </div>
+                </s_list>
+
+                <!-- [C] 글 목록 및 본문 영역 -->
+                <div id="article-list-container">
+                    <s_article_rep>
+                        <!-- 1. 글 본문 -->
+                        <s_permalink_article_rep>
+                            <div class="article-card permalink-view">
+                                <header class="article-header">
+                                    <span class="category-badge">[##_article_rep_category_##]</span>
+                                    <h1 class="article-title">[##_article_rep_title_##]</h1>
+                                    <div class="article-meta">
+                                        <span class="date">[##_article_rep_date_##]</span>
+                                        <s_ad_div>
+                                            <span class="admin-btn-group">
+                                                <span class="separator">·</span>
+                                                <a href="[##_s_ad_m_link_##]">수정/삭제</a>
+                                            </span>
+                                        </s_ad_div>
+                                    </div>
+                                </header>
+                                
+                                <div class="article-body">
+                                    [##_article_rep_desc_##]
+                                </div>
+
+                                <s_tag_label>
+                                    <div class="tag-area">
+                                        <span class="tag-title">Tags:</span> [##_tag_label_rep_##]
+                                    </div>
+                                </s_tag_label>
+
+                                <div class="article-nav">
+                                    <s_article_prev>
+                                        <a href="[##_article_prev_link_##]" class="nav-btn prev">
+                                            <span class="nav-label">⬅️ 이전 글</span>
+                                            <span class="nav-title">[##_article_prev_title_##]</span>
+                                        </a>
+                                    </s_article_prev>
+                                    <s_article_next>
+                                        <a href="[##_article_next_link_##]" class="nav-btn next">
+                                            <span class="nav-label">다음 글 ➡️</span>
+                                            <span class="nav-title">[##_article_next_title_##]</span>
+                                        </a>
+                                    </s_article_next>
+                                </div>
+                            </div>
+                            
+                            <s_rp>
+                                <div class="comment-area">
+                                    <h3>Comments <span class="count">[##_article_rep_rp_cnt_##]</span></h3>
+                                    <s_rp_input_form>
+                                        <div class="comment-form">
+                                            <div class="form-inputs">
+                                                <input type="text" name="[##_rp_input_name_##]" placeholder="이름" value="[##_guest_name_##]" class="inp-text">
+                                                <input type="password" name="[##_rp_input_password_##]" placeholder="비밀번호" class="inp-text">
+                                            </div>
+                                            <textarea name="[##_rp_input_comment_##]" rows="4" placeholder="댓글을 입력하세요..."></textarea>
+                                            <div class="form-actions">
+                                                <div class="secret-chk">
+                                                    <input type="checkbox" name="[##_rp_input_is_secret_##]" id="secret">
+                                                    <label for="secret">비밀글</label>
+                                                </div>
+                                                <button type="submit" onclick="[##_rp_onclick_submit_##]">등록</button>
+                                            </div>
+                                        </div>
+                                    </s_rp_input_form>
+                                    <div class="comment-list">
+                                        <s_rp_container>
+                                            <ol>
+                                                <s_rp_rep>
+                                                    <li id="[##_rp_rep_id_##]">
+                                                        <div class="comment-item">
+                                                            <div class="comment-header">
+                                                                <span class="name">[##_rp_rep_name_##]</span>
+                                                                <span class="date">[##_rp_rep_date_##]</span>
+                                                                <span class="control">
+                                                                    <a href="#" onclick="[##_rp_rep_onclick_delete_##]">삭제</a>
+                                                                    <a href="#" onclick="[##_rp_rep_onclick_reply_##]">답글</a>
+                                                                </span>
+                                                            </div>
+                                                            <p>[##_rp_rep_desc_##]</p>
+                                                        </div>
+                                                        <s_rp2_container>
+                                                            <ul class="reply-list">
+                                                                <s_rp2_rep>
+                                                                    <li id="[##_rp_rep_id_##]">
+                                                                        <div class="comment-item reply">
+                                                                            <div class="comment-header">
+                                                                                <span class="name">[##_rp_rep_name_##]</span>
+                                                                                <span class="date">[##_rp_rep_date_##]</span>
+                                                                                <span class="control">
+                                                                                    <a href="#" onclick="[##_rp_rep_onclick_delete_##]">삭제</a>
+                                                                                </span>
+                                                                            </div>
+                                                                            <p>[##_rp_rep_desc_##]</p>
+                                                                        </div>
+                                                                    </li>
+                                                                </s_rp2_rep>
+                                                            </ul>
+                                                        </s_rp2_container>
+                                                    </li>
+                                                </s_rp_rep>
+                                            </ol>
+                                        </s_rp_container>
+                                    </div>
+                                </div>
+                            </s_rp>
+                        </s_permalink_article_rep>
+
+                        <!-- 2. 목록 -->
+                        <s_index_article_rep>
+                            <div class="list-card">
+                                <a href="[##_article_rep_link_##]" class="list-link">
+                                    <div class="list-thumb">
+                                        <img src="[##_article_rep_thumbnail_url_##]" onerror="this.src='./images/temp_thumb.png'" alt="">
+                                    </div>
+                                    <div class="list-text">
+                                        <h2 class="list-title">[##_article_rep_title_##]</h2>
+                                        <p class="list-summary">[##_article_rep_summary_##]</p>
+                                        <span class="list-date">[##_article_rep_date_##]</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </s_index_article_rep>
+                    </s_article_rep>
+                </div>
+
+                <div id="load-more-area" style="display: none; text-align: center; margin-top: 20px;">
+                    <button id="btn-load-more" onclick="loadMorePosts()">👇 더보기 (Load More)</button>
+                </div>
+
+                <!-- [D] 방명록 -->
+                <s_guest>
+                    <div class="guestbook-container">
+                        <h2 class="section-title">💬 Guestbook Chat</h2>
+                        <s_guest_input_form>
+                            <div class="chat-input-area">
+                                <textarea name="[##_guest_textarea_body_##]" placeholder="메시지를 입력하세요..."></textarea>
+                                <div class="chat-actions">
+                                    <div class="auth-inputs">
+                                        <input type="text" name="[##_guest_input_name_##]" placeholder="이름" value="[##_guest_name_##]">
+                                        <input type="password" name="[##_guest_input_password_##]" placeholder="비밀번호">
+                                    </div>
+                                    <button type="submit" onclick="[##_guest_onclick_submit_##]">전송</button>
+                                </div>
+                            </div>
+                        </s_guest_input_form>
+                        <div class="chat-list">
+                            <s_guest_container>
+                                <ol>
+                                    <s_guest_rep>
+                                        <li class="chat-message" id="[##_guest_rep_id_##]">
+                                            <div class="message-row">
+                                                <div class="avatar">👤</div>
+                                                <div class="bubble-group">
+                                                    <div class="sender-name">[##_guest_rep_name_##]</div>
+                                                    <div class="bubble">[##_guest_rep_desc_##]</div>
+                                                    <div class="message-meta">
+                                                        [##_guest_rep_date_##] 
+                                                        <a href="#" onclick="[##_guest_rep_onclick_delete_##]">삭제</a>
+                                                        <a href="#" onclick="[##_guest_rep_onclick_reply_##]">답글</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <s_guest_reply_container>
+                                                <ul>
+                                                    <s_guest_reply_rep>
+                                                        <li class="chat-message reply">
+                                                            <div class="message-row admin-side">
+                                                                <div class="bubble-group">
+                                                                    <div class="sender-name">[##_guest_rep_name_##]</div>
+                                                                    <div class="bubble reply-bubble">[##_guest_rep_desc_##]</div>
+                                                                    <div class="message-meta">
+                                                                        [##_guest_rep_date_##]
+                                                                        <a href="#" onclick="[##_guest_rep_onclick_delete_##]">삭제</a>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="avatar admin-avatar">🤖</div>
+                                                            </div>
+                                                        </li>
+                                                    </s_guest_reply_rep>
+                                                </ul>
+                                            </s_guest_reply_container>
+                                        </li>
+                                    </s_guest_rep>
+                                </ol>
+                            </s_guest_container>
+                        </div>
+                    </div>
+                </s_guest>
+
+                <s_paging>
+                    <div class="pagination" id="pagination-area">
+                        <a href="[##_paging_rep_link_##]" class="page-num">[##_paging_rep_link_num_##]</a>
+                    </div>
+                </s_paging>
+            </div>
+
+            <footer id="footer">
+                <p>Copyright © [##_title_##]. Powered by Tistory.</p>
+            </footer>
+        </main>
+    </div>
+</s_t3>
+
+<script>
+    let nextPageUrl = null;
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const pagination = document.getElementById('pagination-area');
+        if (pagination) {
+            const links = pagination.getElementsByTagName('a');
+            for(let link of links) {
+                if (link.classList.contains('next') || link.innerText.includes('다음') || link.innerText.includes('Next')) {
+                    nextPageUrl = link.getAttribute('href');
+                    break;
+                }
+            }
+            if (nextPageUrl) {
+                document.getElementById('load-more-area').style.display = 'block';
+                pagination.style.display = 'none';
+            }
+        }
+    });
+
+    function loadMorePosts() {
+        if (!nextPageUrl) return;
+
+        const btn = document.getElementById('btn-load-more');
+        btn.innerText = '로딩 중...';
+        btn.disabled = true;
+
+        fetch(nextPageUrl)
+            .then(response => response.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const newPosts = doc.querySelectorAll('.list-card');
+                const container = document.getElementById('article-list-container');
+                
+                newPosts.forEach(post => {
+                    container.appendChild(post);
+                });
+
+                const newPagination = doc.getElementById('pagination-area');
+                let foundNext = false;
+                if (newPagination) {
+                    const links = newPagination.getElementsByTagName('a');
+                    for(let link of links) {
+                        if (link.classList.contains('next') || link.innerText.includes('다음') || link.innerText.includes('Next')) {
+                            nextPageUrl = link.getAttribute('href');
+                            foundNext = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (foundNext) {
+                    btn.innerText = '👇 더보기 (Load More)';
+                    btn.disabled = false;
+                } else {
+                    btn.style.display = 'none';
+                }
+            })
+            .catch(err => {
+                console.error('포스트 로드 실패:', err);
+                btn.innerText = '로드 실패 (다시 시도)';
+                btn.disabled = false;
+            });
+    }
+</script>
+</body>
+</html>
