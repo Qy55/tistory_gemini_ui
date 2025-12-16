@@ -30,13 +30,33 @@
                     [##_category_list_##]
                 </nav>
                 
+                <!-- [수정] 사이드바 위젯 (인기글: 접기 기능 적용) -->
+                <div class="sidebar-widgets">
+                    <details class="widget-box">
+                        <summary class="widget-title">
+                            <span>🔥 인기글</span>
+                            <span class="widget-icon">▼</span>
+                        </summary>
+                        <ul>
+                            <s_rctps_popular_rep>
+                                <li>
+                                    <a href="[##_rctps_rep_link_##]">
+                                        <span class="text">[##_rctps_rep_title_##]</span>
+                                        <span class="sub-text">[##_rctps_rep_simple_date_##]</span>
+                                    </a>
+                                </li>
+                            </s_rctps_popular_rep>
+                        </ul>
+                    </details>
+                </div>
+
+                <!-- 태그 목록 버튼 -->
                 <div class="sidebar-tag-btn-area">
                     <a href="/tag" class="sidebar-tag-link">🏷️ 태그 (Tags)</a>
                 </div>
 
-                <!-- [AD] 사이드바 광고 영역 -->
+                <!-- 사이드바 광고 영역 -->
                 <div class="sidebar-ad-area">
-                    <!-- 여기에 사이드바 광고 코드(160x600 또는 반응형)를 넣으세요 -->
                     <div class="ad-placeholder">
                         <span>Advertisement</span>
                     </div>
@@ -118,9 +138,8 @@
                                     </div>
                                 </header>
                                 
-                                <!-- [AD] 본문 상단 광고 영역 -->
+                                <!-- 본문 상단 광고 -->
                                 <div class="article-ad-top">
-                                    <!-- 여기에 본문 상단 광고 코드를 넣으세요 -->
                                     <div class="ad-placeholder">
                                         <span>Advertisement (Top)</span>
                                     </div>
@@ -130,9 +149,8 @@
                                     [##_article_rep_desc_##]
                                 </div>
 
-                                <!-- [AD] 본문 하단 광고 영역 -->
+                                <!-- 본문 하단 광고 -->
                                 <div class="article-ad-bottom">
-                                    <!-- 여기에 본문 하단 광고 코드를 넣으세요 -->
                                     <div class="ad-placeholder">
                                         <span>Advertisement (Bottom)</span>
                                     </div>
@@ -322,20 +340,15 @@
 <!-- 스크립트: 구독 버튼 이동 및 상태 감지 + 더보기 기능 -->
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        // 1. 티스토리 자체 구독 버튼 관리
         const moveSubscribeBtn = setInterval(() => {
             const nativeBtn = document.querySelector('.btn_subscription');
             const container = document.getElementById('subscribe-container');
             
             if (nativeBtn && container) {
-                // 버튼 이동
                 container.appendChild(nativeBtn);
                 nativeBtn.style.display = 'flex';
-                
-                // 버튼이 있을 때만 컨테이너 표시
                 container.style.display = ''; 
                 
-                // 구독 상태에 따른 텍스트 및 스타일 업데이트
                 const updateSubscribeStatus = () => {
                     const status = nativeBtn.getAttribute('data-status');
                     if (status === 'following') {
@@ -352,21 +365,13 @@
                 };
 
                 updateSubscribeStatus();
-
                 const observer = new MutationObserver(updateSubscribeStatus);
-                observer.observe(nativeBtn, { 
-                    attributes: true, 
-                    attributeFilter: ['data-status'] 
-                });
-                
+                observer.observe(nativeBtn, { attributes: true, attributeFilter: ['data-status'] });
                 clearInterval(moveSubscribeBtn);
             }
         }, 500);
-
         setTimeout(() => clearInterval(moveSubscribeBtn), 10000); 
 
-
-        // 2. 더보기 기능
         let nextPageUrl = null;
         const pagination = document.getElementById('pagination-area');
         if (pagination) {
@@ -389,43 +394,36 @@
             btn.innerText = '로딩 중...';
             btn.disabled = true;
 
-            fetch(nextPageUrl)
-                .then(response => response.text())
-                .then(html => {
-                    const parser = new DOMParser();
-                    const doc = parser.parseFromString(html, 'text/html');
-                    const newPosts = doc.querySelectorAll('.list-card');
-                    const container = document.getElementById('article-list-container');
-                    
-                    newPosts.forEach(post => {
-                        container.appendChild(post);
-                    });
+            fetch(nextPageUrl).then(response => response.text()).then(html => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const newPosts = doc.querySelectorAll('.list-card');
+                const container = document.getElementById('article-list-container');
+                newPosts.forEach(post => container.appendChild(post));
 
-                    const newPagination = doc.getElementById('pagination-area');
-                    let foundNext = false;
-                    if (newPagination) {
-                        const links = newPagination.getElementsByTagName('a');
-                        for(let link of links) {
-                            if (link.classList.contains('next') || link.innerText.includes('다음') || link.innerText.includes('Next')) {
-                                nextPageUrl = link.getAttribute('href');
-                                foundNext = true;
-                                break;
-                            }
+                const newPagination = doc.getElementById('pagination-area');
+                let foundNext = false;
+                if (newPagination) {
+                    const links = newPagination.getElementsByTagName('a');
+                    for(let link of links) {
+                        if (link.classList.contains('next') || link.innerText.includes('다음') || link.innerText.includes('Next')) {
+                            nextPageUrl = link.getAttribute('href');
+                            foundNext = true;
+                            break;
                         }
                     }
-
-                    if (foundNext) {
-                        btn.innerText = '👇 더보기 (Load More)';
-                        btn.disabled = false;
-                    } else {
-                        btn.style.display = 'none';
-                    }
-                })
-                .catch(err => {
-                    console.error('포스트 로드 실패:', err);
-                    btn.innerText = '로드 실패 (다시 시도)';
+                }
+                if (foundNext) {
+                    btn.innerText = '👇 더보기 (Load More)';
                     btn.disabled = false;
-                });
+                } else {
+                    btn.style.display = 'none';
+                }
+            }).catch(err => {
+                console.error('포스트 로드 실패:', err);
+                btn.innerText = '로드 실패 (다시 시도)';
+                btn.disabled = false;
+            });
         };
     });
 </script>
