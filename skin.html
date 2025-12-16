@@ -21,7 +21,8 @@
                     <p class="blogger-desc">System Admin Note</p>
                     
                     <div class="sidebar-action-btns">
-                        <button class="btn-subscribe" onclick="window.open('[##_rss_url_##]')">⚡ 구독</button>
+                        <!-- [수정] 티스토리 자체 구독 버튼이 이동해 올 자리 -->
+                        <div id="subscribe-container" class="subscribe-wrapper"></div>
                         <a href="/guestbook" class="btn-guestbook">💬 방명록</a>
                     </div>
                 </div>
@@ -29,7 +30,6 @@
                     [##_category_list_##]
                 </nav>
                 
-                <!-- [NEW] 태그 모음 화면 이동 버튼 -->
                 <div class="sidebar-tag-btn-area">
                     <a href="/tag" class="sidebar-tag-link">🏷️ 태그 (Tags)</a>
                 </div>
@@ -136,6 +136,7 @@
                                 </div>
                             </div>
                             
+                            <!-- 댓글 영역 -->
                             <s_rp>
                                 <div class="comment-area">
                                     <h3>Comments <span class="count">[##_article_rep_rp_cnt_##]</span></h3>
@@ -294,10 +295,57 @@
     </div>
 </s_t3>
 
+<!-- [수정됨] 스크립트: 구독 버튼 이동 및 상태 감지 + 더보기 기능 -->
 <script>
-    let nextPageUrl = null;
-
     document.addEventListener("DOMContentLoaded", function() {
+        // 1. 티스토리 자체 구독 버튼 관리
+        const moveSubscribeBtn = setInterval(() => {
+            const nativeBtn = document.querySelector('.btn_subscription');
+            const container = document.getElementById('subscribe-container');
+            
+            if (nativeBtn && container) {
+                // 버튼 이동
+                container.appendChild(nativeBtn);
+                nativeBtn.style.display = 'flex';
+                
+                // [기능] 구독 상태에 따른 텍스트 및 스타일 업데이트 함수
+                const updateSubscribeStatus = () => {
+                    const status = nativeBtn.getAttribute('data-status');
+                    if (status === 'following') {
+                        // 구독 중일 때
+                        nativeBtn.innerHTML = '✔ 구독중';
+                        // 필요하다면 배경색 변경 (CSS 클래스 활용 권장, 여기서는 인라인 예시)
+                        nativeBtn.style.backgroundColor = '#2b2d30'; 
+                        nativeBtn.style.color = '#c4c7c5';
+                        nativeBtn.style.border = '1px solid #444746';
+                    } else {
+                        // 미구독 상태
+                        nativeBtn.innerHTML = '⚡ 구독';
+                        nativeBtn.style.backgroundColor = '#004a77'; 
+                        nativeBtn.style.color = '#c2e7ff';
+                        nativeBtn.style.border = 'none';
+                    }
+                };
+
+                // 초기 실행
+                updateSubscribeStatus();
+
+                // [중요] 상태 변화 감지 (사용자가 클릭해서 상태가 바뀔 때)
+                const observer = new MutationObserver(updateSubscribeStatus);
+                observer.observe(nativeBtn, { 
+                    attributes: true, 
+                    attributeFilter: ['data-status'] 
+                });
+                
+                clearInterval(moveSubscribeBtn);
+            }
+        }, 500);
+
+        setTimeout(() => clearInterval(moveSubscribeBtn), 10000); // 10초 타임아웃
+
+
+        // 2. 더보기 기능 (기존 로직 유지)
+        let nextPageUrl = null;
         const pagination = document.getElementById('pagination-area');
         if (pagination) {
             const links = pagination.getElementsByTagName('a');
@@ -312,53 +360,52 @@
                 pagination.style.display = 'none';
             }
         }
-    });
+        
+        window.loadMorePosts = function() {
+            if (!nextPageUrl) return;
+            const btn = document.getElementById('btn-load-more');
+            btn.innerText = '로딩 중...';
+            btn.disabled = true;
 
-    function loadMorePosts() {
-        if (!nextPageUrl) return;
+            fetch(nextPageUrl)
+                .then(response => response.text())
+                .then(html => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    const newPosts = doc.querySelectorAll('.list-card');
+                    const container = document.getElementById('article-list-container');
+                    
+                    newPosts.forEach(post => {
+                        container.appendChild(post);
+                    });
 
-        const btn = document.getElementById('btn-load-more');
-        btn.innerText = '로딩 중...';
-        btn.disabled = true;
-
-        fetch(nextPageUrl)
-            .then(response => response.text())
-            .then(html => {
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, 'text/html');
-                const newPosts = doc.querySelectorAll('.list-card');
-                const container = document.getElementById('article-list-container');
-                
-                newPosts.forEach(post => {
-                    container.appendChild(post);
-                });
-
-                const newPagination = doc.getElementById('pagination-area');
-                let foundNext = false;
-                if (newPagination) {
-                    const links = newPagination.getElementsByTagName('a');
-                    for(let link of links) {
-                        if (link.classList.contains('next') || link.innerText.includes('다음') || link.innerText.includes('Next')) {
-                            nextPageUrl = link.getAttribute('href');
-                            foundNext = true;
-                            break;
+                    const newPagination = doc.getElementById('pagination-area');
+                    let foundNext = false;
+                    if (newPagination) {
+                        const links = newPagination.getElementsByTagName('a');
+                        for(let link of links) {
+                            if (link.classList.contains('next') || link.innerText.includes('다음') || link.innerText.includes('Next')) {
+                                nextPageUrl = link.getAttribute('href');
+                                foundNext = true;
+                                break;
+                            }
                         }
                     }
-                }
 
-                if (foundNext) {
-                    btn.innerText = '👇 더보기 (Load More)';
+                    if (foundNext) {
+                        btn.innerText = '👇 더보기 (Load More)';
+                        btn.disabled = false;
+                    } else {
+                        btn.style.display = 'none';
+                    }
+                })
+                .catch(err => {
+                    console.error('포스트 로드 실패:', err);
+                    btn.innerText = '로드 실패 (다시 시도)';
                     btn.disabled = false;
-                } else {
-                    btn.style.display = 'none';
-                }
-            })
-            .catch(err => {
-                console.error('포스트 로드 실패:', err);
-                btn.innerText = '로드 실패 (다시 시도)';
-                btn.disabled = false;
-            });
-    }
+                });
+        };
+    });
 </script>
 </body>
 </html>
